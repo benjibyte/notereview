@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Turn your school notes into a focused flashcard or coding practice session."
+    />
+    <meta name="theme-color" content="#f6f4ef" />
+    <title>Study Sprint — turn notes into practice</title>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="wordmark" href="./" aria-label="Study Sprint home">
+          <span class="wordmark-icon" aria-hidden="true">s.</span>
+          <span>study sprint</span>
+        </a>
+        <a class="docs-link" href="./docs/">How it works <span aria-hidden="true">↗</span></a>
+      </header>
+
+      <main>
+        <section class="intro" aria-labelledby="page-title">
+          <div class="eyebrow"><span class="status-dot"></span> YOUR NOTES, A BETTER STUDY SESSION</div>
+          <h1 id="page-title">Make your notes<br /><span>work for you.</span></h1>
+          <p class="intro-copy">
+            Paste in a Markdown lesson. Get a set of flashcards or a timed coding drill, ready when you are.
+          </p>
+        </section>
+
+        <section class="workspace" aria-label="Study session">
+          <section class="panel source-panel" aria-labelledby="source-title">
+            <div class="panel-heading">
+              <div>
+                <span class="step-label">STEP 01</span>
+                <h2 id="source-title">Bring your material</h2>
+              </div>
+            </div>
+            <div class="upload-actions">
+              <label class="upload-button" for="file-input">↑ <span>Open .md</span></label>
+              <input id="file-input" class="visually-hidden" type="file" accept=".md,.markdown,text/markdown,text/plain" />
+              <label class="upload-button" for="photo-input">▧ <span>Add note photos</span></label>
+              <input id="photo-input" class="visually-hidden" type="file" accept="image/jpeg,image/png,image/webp" multiple />
+            </div>
+            <p class="ocr-note">Local English OCR · up to 5 photos, 10 MB each · first scan downloads ~11 MB · best with clear, well-lit handwriting</p>
+            <p id="ocr-status" class="ocr-status" role="status" aria-live="polite" hidden></p>
+            <label class="visually-hidden" for="notes-input">Paste your Markdown notes here</label>
+            <textarea
+              id="notes-input"
+              spellcheck="false"
+              placeholder="# Paste your notes here&#10;&#10;Or add photos of your notes above.&#10;&#10;Everything stays in this browser."
+            ></textarea>
+            <div class="source-footer">
+              <span id="word-count">0 words</span>
+              <button id="sample-button" class="text-button" type="button">Try a sample</button>
+            </div>
+            <div class="mode-row">
+              <label for="mode-select">Study mode</label>
+              <select id="mode-select">
+                <option value="auto">Auto-detect</option>
+                <option value="flashcards">Flashcards</option>
+                <option value="coding">Coding practice</option>
+              </select>
+            </div>
+            <button id="start-button" class="primary-button" type="button">
+              Build my study session <span aria-hidden="true">→</span>
+            </button>
+            <p class="privacy-note"><span aria-hidden="true">✳</span> Private by design. Your notes never leave this device.</p>
+          </section>
+
+          <section class="panel practice-panel" aria-labelledby="practice-title">
+            <div class="panel-heading practice-heading">
+              <div>
+                <span class="step-label">STEP 02</span>
+                <h2 id="practice-title">Your practice space</h2>
+              </div>
+              <div id="session-badge" class="session-badge">READY WHEN YOU ARE</div>
+            </div>
+
+            <div id="empty-state" class="empty-state">
+              <div class="empty-illustration" aria-hidden="true">
+                <div class="paper paper-back"></div>
+                <div class="paper paper-front">
+                  <span class="paper-line line-one"></span>
+                  <span class="paper-line line-two"></span>
+                  <span class="paper-line line-three"></span>
+                  <span class="paper-star">✳</span>
+                </div>
+              </div>
+              <h3>A little practice<br />goes a long way.</h3>
+              <p>Your cards or coding tests will show up here once you add your notes.</p>
+              <div class="empty-hint"><span>↖</span> Start by pasting Markdown on the left</div>
+            </div>
+
+            <div id="study-area" class="study-area" hidden>
+              <div class="session-progress">
+                <span id="progress-label">CARD 1 OF 1</span>
+                <div class="progress-track"><div id="progress-bar"></div></div>
+                <span id="timer" class="timer" hidden>10:00</span>
+              </div>
+
+              <div id="flashcard-view" class="flashcard-view" hidden>
+                <div class="card face-card">
+                  <span class="card-kicker">YOUR PROMPT</span>
+                  <p id="card-question" class="card-question"></p>
+                  <div class="card-bottom"><span>Take a moment to think it through.</span><span>✳</span></div>
+                </div>
+                <div id="card-answer" class="card answer-card" hidden>
+                  <span class="card-kicker">THE ANSWER</span>
+                  <p id="card-answer-text"></p>
+                </div>
+                <div class="practice-actions">
+                  <button id="reveal-button" class="primary-button" type="button">Reveal answer <span aria-hidden="true">↓</span></button>
+                  <div id="rating-actions" class="rating-actions" hidden>
+                    <button id="again-button" class="secondary-button" type="button">↺ &nbsp;Practice again</button>
+                    <button id="got-it-button" class="primary-button" type="button">Got it <span aria-hidden="true">→</span></button>
+                  </div>
+                </div>
+              </div>
+
+              <div id="coding-view" class="coding-view" hidden>
+                <div class="challenge-heading">
+                  <span class="challenge-icon" aria-hidden="true">&lt;/&gt;</span>
+                  <div>
+                    <span class="card-kicker">MINI TEST</span>
+                    <h3 id="challenge-title">Complete the code</h3>
+                  </div>
+                </div>
+                <p id="challenge-prompt" class="challenge-prompt"></p>
+                <pre id="code-sample" class="code-sample" aria-label="Code with a missing word"></pre>
+                <label class="answer-label" for="code-answer">Your answer</label>
+                <input id="code-answer" class="code-answer" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type the missing code…" />
+                <div id="test-result" class="test-result" role="status" aria-live="polite"></div>
+                <div class="practice-actions">
+                  <button id="test-button" class="primary-button" type="button">Run test <span aria-hidden="true">→</span></button>
+                  <button id="next-challenge-button" class="primary-button" type="button" hidden>Next test <span aria-hidden="true">→</span></button>
+                </div>
+              </div>
+
+              <div id="complete-view" class="complete-view" hidden>
+                <div class="complete-mark" aria-hidden="true">✓</div>
+                <span class="card-kicker">SESSION COMPLETE</span>
+                <h3 id="complete-title">Nice work.</h3>
+                <p id="complete-copy"></p>
+                <button id="restart-button" class="secondary-button" type="button">Start over</button>
+              </div>
+            </div>
+            <div id="feedback" class="feedback" role="status" aria-live="polite" hidden></div>
+          </section>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span>Made for curious minds. ✳</span>
+        <span>Runs entirely in your browser</span>
+      </footer>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
